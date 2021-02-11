@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Tutorial HTML 5 Canvas</title>
+</head>
+
+<body>
+    <table width="100%" border="1" height="100%">
+        <tr>
+            <td align="center">
+                <canvas id="myCanvas" width="800" height="400" style="border:1px solid #000000;"></canvas>
+            </td>
+        </tr>
+    </table><br>
+    <hr size="2" width="100%" color="black">
+    <div align=center>
+        <button style="width:90px" onclick="setTimeout(atas, 0)">Atas</button>
+        <button style="width:90px" onclick="setTimeout(bawah, 0)">Bawah</button>
+        <button style="width:90px" onclick="setTimeout(kanan, 0)">Kanan</button>
+        <button style="width:90px" onclick="setTimeout(kiri, 0)">Kiri</button>
+        <button style="width:90px" onclick="setTimeout(bersihkan, 0)">Bersihkan</button>
+        <button style="width:90px" onclick="setTimeout(persegi, 0)">persegi</button><br>
+    </div>
+    <!-- <button style="width:90px" onclick="setTimeout(rotasi, 0)">Rotasi</button> -->
+
+    <hr size="2" width="100%" color="black">
+    <div align=center>
+        <button style="width:90px" onclick="setTimeout(rotasigerak(2), 1000)">Atas</button>
+        <button style="width:90px" onclick="setTimeout(rotasigerak(4), 1000)">Bawah</button>
+        <button style="width:90px" onclick="setTimeout(rotasigerakbawah(3), 100)">Kanan</button>
+        <button style="width:90px" onclick="setTimeout(rotasigerak(1), 1000)">Kiri</button>
+        <button style="width:90px" onclick="setInterval(rotasi, 0)">Rotasi</button><br>
+        <button style="width:90px" onclick="setTimeout(rotasigerakbawah, 0)">Rotasi Gerak</button>
+    </div>
+    <p id="demo"></p>
+
+    <form id="frm1" action="/action_page.php">
+        x : <input type="text" name="fname" id="xawal" placeholder="Masukkan Angka x" value=50> y : <input type="text" name="lname" id="yawal" placeholder="Masukkan Angka y" value=50>
+        <br>
+    </form>
+
+    <script>
+        var x = document.getElementById("frm1");
+        var x1 = parseInt(x.elements[0].value),
+            y1 = parseInt(x.elements[1].value);
+        var abc = 1;
+        text =
+            "x1 : " + x1 + "<br>" +
+            "y1 : " + y1 + "<br>";
+        document.getElementById("demo").innerHTML = text;
+
+        var gerak = TRUE,
+            rot1 = 100,
+            xrotasi = 20,
+            k = 3;
+
+        function persegi() {
+            var canvas = document.getElementById("myCanvas");
+            var ctx = canvas.getContext("2d");
+            var width = canvas.scrollWidth / 2;
+            var height = canvas.scrollHeight / 2;
+
+            var x = width + x1;
+            var y = height - y1;
+            bersihkan();
+
+            ctx.beginPath(); // mulai menggmabar
+            ctx.moveTo(x, y); // titik awal
+            ctx.lineTo(x, y + 50); // titik ke-2
+            ctx.lineTo(x + 50, y + 50);
+            ctx.lineTo(x + 50, y); // titik ke-3
+            ctx.closePath(); // titik ke-3 ke titik awal
+
+            // buat garis
+            ctx.stroke();
+        }
+
+        function bersihkan() {
+            var canvas = document.getElementById('myCanvas');
+            var ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, 800, 400);
+        }
+
+        function atas() {
+            if (y1 < 200) {
+                y1 += 10;
+                persegi();
+            } else {
+                k = 3;
+            }
+            text =
+                "x1 : " + x1 + "<br>" +
+                "y1 : " + y1 + "<br>";
+            document.getElementById("demo").innerHTML = text;
+        }
+
+        function bawah() {
+            if (y1 > -150) {
+                y1 -= 10;
+                persegi();
+            } else {
+                k = 1;
+            }
+
+
+            text =
+                "x1 : " + x1 + "<br>" +
+                "y1 : " + y1 + "<br>";
+            document.getElementById("demo").innerHTML = text;
+        }
+
+        function kiri() {
+            if (x1 > -400) {
+                x1 -= 10;
+                persegi();
+            } else {
+                k = 3;
+            }
+            text =
+                "x1 : " + x1 + "<br>" +
+                "y1 : " + y1 + "<br>";
+            document.getElementById("demo").innerHTML = text;
+        }
+
+        function kanan() {
+            if (x1 < 350) {
+                x1 += 25;
+                persegi();
+            } else {
+                k = 1;
+            }
+            text =
+                "x1 : " + x1 + "<br>" +
+                "y1 : " + y1 + "<br>";
+            document.getElementById("demo").innerHTML = text;
+        }
+
+        function rotasi() {
+            const canvas = document.getElementById('myCanvas');
+            const ctx = canvas.getContext('2d');
+            var width = canvas.scrollWidth / 2;
+            var height = canvas.scrollHeight / 2;
+            var x = width + x1;
+            var y = height - y1;
+            bersihkan();
+            ctx.translate(x + 50 / 2, y + 50 / 2);
+            ctx.rotate(30 * Math.PI / 180);
+            ctx.translate(-(x + 50 / 2), -(y + 50 / 2));
+            persegi();
+        }
+
+        function rotasiset() {
+            t = 100;
+            for (i = 0; i < 12; i++) {
+                setTimeout(rotasi, t);
+                t += 50;
+            }
+            t = 100;
+        }
+
+        function rotasigerak() {
+            rotasiset();
+            switch (k) {
+                case 1:
+                    kiri();
+                    break;
+                case 2:
+                    atas();
+                    break;
+                case 3:
+                    kanan();
+                    break;
+                case 4:
+                    bawah();
+                    break;
+            }
+        }
+
+
+        function rotasigerakbawah(abc) {
+            k = abc;
+            var inter = setInterval(rotasigerak, 690);
+        }
+    </script>
+
+</body>
+
+</html>
